@@ -1,0 +1,9 @@
+android {
+    namespace "com.example.english_word_app"
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion "27.0.12077973"
+
+    compileOptions {
+// ... existing code ...
+    }
+} 
