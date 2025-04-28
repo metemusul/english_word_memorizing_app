@@ -19,7 +19,7 @@ class _TemproryState extends State<Temprory> {
     // TODO: implement initState
     super.initState();
 
-    Future.delayed(Duration(seconds: 2),() {
+    Future.delayed(Duration(seconds: 10),() {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Mainpage(),));
     },);
   }

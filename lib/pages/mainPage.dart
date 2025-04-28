@@ -1,9 +1,12 @@
 
 
 import 'package:english_word_app/colors/generallyColors.dart';
+import 'package:english_word_app/global_widget/app_bar.dart';
 import 'package:english_word_app/pages/lists_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 
 class Mainpage extends StatefulWidget {
@@ -15,43 +18,67 @@ class Mainpage extends StatefulWidget {
 
 class _MainpageState extends State<Mainpage> {
 
+static const _url = "https://flutter.dev";
+
 Lang? _chooseLang = Lang.english;
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+late PackageInfo packageInfo;
+String version = " ";
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    package_info_init();
+  }
+
+void package_info_init() async{
+  
+
+   packageInfo = await PackageInfo.fromPlatform();
+   setState(() {
+     version = packageInfo.version;
+   });
+}
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer:Container(width: MediaQuery.of(context).size.width*0.5,color: firsColors.primaryWhiteColor,) ,
-      appBar: PreferredSize(preferredSize: Size.fromHeight(50), 
-      child: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: firsColors.primaryWhiteColor,
-        elevation: 0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width*0.2,
-              child: InkWell(
-                onTap: () {_scaffoldKey.currentState!.openDrawer();},
-                child: FaIcon(FontAwesomeIcons.bars,color : Colors.black))
-            ),
-             Container(
-              width: MediaQuery.of(context).size.width*0.4,
-              child: Text("QWorDaZy",style: TextStyle(color: Colors.black,fontFamily: "lucky",fontSize: 25),),
-            ),
-             Container(
-              width: MediaQuery.of(context).size.width*0.1,
-              
-            )
-          ],
-        ),
-      )
-      
-      ),
+      drawer:SafeArea(
+        child: Container(
+          width: MediaQuery.of(context).size.width*0.5,
+          color: firsColors.primaryWhiteColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+              Image.asset("assets/images/logo.png",),
+              Text("Qwordazy",style: TextStyle(fontSize: 26),),
+              Text("İtediğini Öğren",style: TextStyle(fontSize: 16),),
+              SizedBox(width:MediaQuery.of(context).size.width*0.35 ,child: Divider(color: Colors.black,)),
+              Container(margin: EdgeInsets.only(top: 50,right: 8,left: 8),child: Text("Bu uygulamanın nasıl yapışdığını öğrenmek ve bu tarz uygulamalar geliştirmek için ",style: TextStyle(fontSize: 16),textAlign: TextAlign.center,)),
+              InkWell(onTap: () async{
+                await canLaunch(_url) ? launch(_url) : throw "Couldn not launch $_url";
+              },child: Text("Tıkla",style: TextStyle(fontSize: 16,color: Colors.blue),)),
+                ],
+              ),
+
+              Text("v"+version+"\nmusulmete129@gmail.com",style: TextStyle(fontSize: 16,color: Colors.blue,),textAlign: TextAlign.center),
+            ],
+          ),
+          ),
+      ) ,
+      appBar: appBar(context,
+       left: FaIcon(FontAwesomeIcons.bars,color: Colors.black,size: 20,),
+        center:  Text("QWorDaZy",style: TextStyle(color: Colors.black,fontFamily: "lucky",fontSize: 25),),
+        leftWidgetonClick:()=>{_scaffoldKey.currentState!.openDrawer()}
+         ),
 
     
       body: SafeArea(
