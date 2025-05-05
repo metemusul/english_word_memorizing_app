@@ -4,8 +4,11 @@ import 'package:english_word_app/global_widget/app_bar.dart';
 import 'package:english_word_app/db/db/db.dart';
 import 'package:english_word_app/db/models/lists.dart';
 import 'package:english_word_app/db/models/words.dart';
+import 'package:english_word_app/global_widget/toast.dart';
 import 'package:english_word_app/pages/lists_page.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class CreateList extends StatefulWidget {
   const CreateList({super.key});
@@ -107,6 +110,9 @@ class _CreateListState extends State<CreateList> {
   }
 
   void saveRow() async {
+
+    if (!_listname.text.isEmpty) {
+      
     int counter = 0;
     bool notEmptyPair = false;
 
@@ -135,7 +141,7 @@ class _CreateListState extends State<CreateList> {
 
     }
 
-    debugPrint("TOAST MESSAGE =>Liste oluşturuldu  . !!!");
+      toastMessage("Liste oluşturuldu.");
     _listname.clear();
     wordTextEditingList.forEach((element){
       element.clear();
@@ -145,13 +151,23 @@ class _CreateListState extends State<CreateList> {
       
       else
        {
-       debugPrint("TOAST MESSAGE =>Boş alanları doldurun veya silin  . !!!");
+       toastMessage("Boş alanları doldurun veya silin");
       }
     } 
     else 
     {
-      debugPrint("TOAST MESSAGE => Minimum 4 Çift dolu olmalıdır . !!!");
+      toastMessage("Minimum 4 Çift dolu olmalıdır . !!!");
+
+    
     }
+    }
+
+    else{
+      toastMessage("Lütfen liste adını girin.");
+
+    }
+
+    
   }
 
   void remoweRow() {
@@ -161,9 +177,8 @@ class _CreateListState extends State<CreateList> {
       wordListField.removeAt(wordListField.length-1);
       setState(() {});
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Minimum 4 satır olmalıdır!"))
-      );
+           toastMessage("Minimum 4 gereklidir . !!!");
+
     }
   }
 

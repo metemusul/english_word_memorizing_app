@@ -76,12 +76,26 @@ Future<List<Word>> readWordByList(int ?ListID) async
   final result = await db.query(tableNameWords,orderBy: orderBy,where: '${WordTableFields.list_id} = ?',whereArgs: [ListID]);
   return result.map((json) => Word.fromJson(json)).toList();
 }
-Future<List<Lists>> readListsAll() async
+Future<List<Map<String,Object?>>> readListsAll() async
 {
   final db = await instance.database;
-  final orderBy = '${ListsTableFields.id} ASC';
-  final result = await db.query(tableNameLists,orderBy: orderBy);
-  return result.map((json) => Lists.fromJson(json)).toList();
+  List<Map<String,Object?>> res =  [];
+  List<Map<String,Object?>> lists = await db.rawQuery('SELECT id,name FROM lists');
+  await Future.forEach(lists, (Map<String, Object?> element) async {
+    var wordInfoByList = await db.rawQuery("SELECT(SELECT COUNT(*) FROM words where list_id=${element['id']}) as sum_word,"
+      "(SELECT COUNT(*) FROM words where status=0 and list_id=${element['id']}) as sum_unlearned");
+
+    Map<String,Object?> temp = Map.of(wordInfoByList[0]);
+    temp["name"] = element["name"];  
+    temp["list_id"] = element["id"];  
+    res.add(temp);
+  }
+   );
+   print(res);
+
+
+
+  return res;
 }
 
 Future<int> updateWord(Word word) async
@@ -99,6 +113,15 @@ Future<int> deleteWord(int id) async
     final db = await instance.database;
     return db.delete(tableNameWords,where: '${WordTableFields.id} =  ? ',whereArgs:[id] );
 }
+
+Future<int> markAsLearned(bool mark,int id) async{
+      final db = await instance.database;
+       int  result = mark == true? 1:0;
+       return db.update(tableNameWords,{WordTableFields.status:result},where: '${WordTableFields.id} = ?',whereArgs: [id]);
+       
+
+}
+
 Future<int> deleteListsAndWordByList(int id) async
 {
     final db = await instance.database;
