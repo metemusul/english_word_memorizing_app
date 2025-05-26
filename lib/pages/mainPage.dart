@@ -294,23 +294,24 @@ class _MainpageState extends State<Mainpage> {
     return SafeArea(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.5,
+        color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               children: [
                 Image.asset("assets/images/logo.png"),
-                Text("Qwordazy", style: TextStyle(fontSize: 26)),
-                Text("İstediğini Öğren", style: TextStyle(fontSize: 16)),
+                Text("Qwordazy", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                Text("İstediğini Öğren", style: TextStyle(fontSize: 16, color: Colors.grey[600])),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.35,
-                  child: Divider(color: Colors.black)
+                  child: Divider(color: Colors.grey[300])
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 50, right: 8, left: 8),
                   child: Text(
                     "Bu uygulamanın nasıl yapışdığını öğrenmek ve bu tarz uygulamalar geliştirmek için ",
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, color: Colors.grey[800]),
                     textAlign: TextAlign.center,
                   )
                 ),
@@ -318,7 +319,7 @@ class _MainpageState extends State<Mainpage> {
                   onTap: () async {
                     await canLaunch(_url) ? launch(_url) : throw "Couldn not launch $_url";
                   },
-                  child: Text("Tıkla", style: TextStyle(fontSize: 16, color: Colors.blue))
+                  child: Text("Tıkla", style: TextStyle(fontSize: 16, color: Colors.blue[700], fontWeight: FontWeight.bold))
                 ),
               ],
             ),
@@ -326,26 +327,34 @@ class _MainpageState extends State<Mainpage> {
               children: [
                 Text(
                   "v" + version,
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   textAlign: TextAlign.center
                 ),
                 const SizedBox(height: 8),
                 Text(
                   "musulmete129@gmail.com",
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   textAlign: TextAlign.center
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    // Çıkış yapma işlemi
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => const LoginPage()),
                     );
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red[400],
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
                   child: const Text('Çıkış Yap'),
                 ),
+                const SizedBox(height: 16),
               ],
             ),
           ],

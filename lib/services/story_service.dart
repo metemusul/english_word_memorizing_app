@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 
 class StoryService {
   static const String _baseUrl = 'https://openrouter.ai/api/v1/chat/completions';
-  static const String _apiKey = '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';
+  static const String _apiKey = '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';
 
   static const Duration _timeout = Duration(seconds: 10);
 
