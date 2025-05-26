@@ -55,10 +55,7 @@ class _ListsPageState extends State<ListsPage> {
     _lists.removeAt(remoweIndexList[i]);
     deleteIndexList.removeAt(remoweIndexList[i]);
   }
-  for (int i = 0; i < deleteIndexList.length; i++) {
-    deleteIndexList[i] = false;
-    
-  }
+
 
   setState(() {
     _lists;
@@ -75,41 +72,23 @@ class _ListsPageState extends State<ListsPage> {
   
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: firsColors.primaryWhiteColor,
-      appBar:appBar(context,
-       left: Icon(Icons.arrow_back_ios,color: firsColors.primaryBlackColor,size:22 ,) ,
-        center: Text(capitalizeFirstLetter("listeler"),style: TextStyle(color: Colors.black,fontFamily: "lucky",fontSize: 25),),
-        right: pressController!= true ?   Image.asset("assets/images/logo.png"): InkWell(
-          onTap:delete,
-          child: Icon(Icons.delete,color: const Color.fromARGB(255, 233, 132, 16),size: 24,),
-        ),
-        leftWidgetonClick:()=>{Navigator.pop(context)}
-         ),
-
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => CreateList()));
         },
         child: Icon(Icons.add,color: firsColors.primaryWhiteColor,),
         backgroundColor: const Color.fromARGB(255, 233, 132, 16),
-        
-        
-        ),
-
+      ),
       body: SafeArea(
         child: ListView.builder(
           itemBuilder: (context,index){
-          return listItem(_lists[index]['list_id'] as int,index, listName: _lists[index]['name'].toString(), sumWords: _lists[index]['sum_word'].toString(), sumUnlearned: _lists[index]['sum_unlearned'].toString());
+            return listItem(_lists[index]['list_id'] as int,index, listName: _lists[index]['name'].toString(), sumWords: _lists[index]['sum_word'].toString(), sumUnlearned: _lists[index]['sum_unlearned'].toString());
           },
-          itemCount:_lists.length ,
-
-
-         ),
-        
-        )
-
+          itemCount:_lists.length,
+        ),
+      )
     );
   }
 
@@ -119,9 +98,7 @@ class _ListsPageState extends State<ListsPage> {
         debugPrint(id.toString());
         Navigator.push(context, MaterialPageRoute(builder: (context)=>WordsPage(ListID: id, ListName:listName ))).then((value) {
          getList();
-
         });
-      
       },
       onLongPress: () {
        setState(() {
@@ -129,69 +106,71 @@ class _ListsPageState extends State<ListsPage> {
           deleteIndexList[index] = true;
        });
       },
-      
       child: Center(
         child: Container(
-                width: double.infinity,
-                child: Card(
-                  color: const Color.fromARGB(255, 241, 201, 141),
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)
-                  ),
-                  margin: EdgeInsets.only(right: 10,left: 10,top: 5,bottom: 5),
-                  child:Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                       Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 10,top: 5),
-                        child: Text(listName!,style: TextStyle(color:firsColors.primaryBlackColor,fontSize: 16,fontFamily: "robotomedium"),)),
-                      Container(
-                        margin: EdgeInsets.only(left: 20,top: 2),
-                        child: Text(sumWords! + " terim ",style: TextStyle(color:firsColors.primaryBlackColor,fontSize: 14,fontFamily: "robotoregular"),)),
-                      Container(
-                         margin: EdgeInsets.only(left: 20,top: 2),
-                        child: Text((int.parse(sumWords!) - int.parse(sumUnlearned!)).toString()  + " öğrenildi",style: TextStyle(color:firsColors.primaryBlackColor,fontSize: 14,fontFamily: "robotoregular"),)),
-                      Container(
-                         margin: EdgeInsets.only(left: 20,top: 2),
-                        child: Text(sumUnlearned! + " öğrenilmedi",style: TextStyle(color:firsColors.primaryBlackColor,fontSize: 14,fontFamily: "robotoregular"),)),
-                    ],
-                  ),
-                  pressController==true? Checkbox(
-                    checkColor: Colors.white,
-                    activeColor: Colors.black,
-                    hoverColor:Colors.blueAccent,
-                    value: deleteIndexList[index],
-                    onChanged: (bool? value){
-                      setState(() {
-                        deleteIndexList[index] = value!;
-                        bool deleteProcessController = false;
+          width: double.infinity,
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            child: Card(
+              color: Theme.of(context).cardColor,
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8)
+              ),
+              margin: EdgeInsets.only(right: 10,left: 10,top: 5,bottom: 5),
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10,top: 5),
+                    child: Text(listName!,style: TextStyle(color:firsColors.primaryBlackColor,fontSize: 16,fontFamily: "robotomedium"),)),
+                  Container(
+                    margin: EdgeInsets.only(left: 20,top: 2),
+                    child: Text(sumWords! + " terim ",style: TextStyle(color:firsColors.primaryBlackColor,fontSize: 14,fontFamily: "robotoregular"),)),
+                  Container(
+                     margin: EdgeInsets.only(left: 20,top: 2),
+                    child: Text((int.parse(sumWords!) - int.parse(sumUnlearned!)).toString()  + " öğrenildi",style: TextStyle(color:firsColors.primaryBlackColor,fontSize: 14,fontFamily: "robotoregular"),)),
+                  Container(
+                     margin: EdgeInsets.only(left: 20,top: 2),
+                    child: Text(sumUnlearned! + " öğrenilmedi",style: TextStyle(color:firsColors.primaryBlackColor,fontSize: 14,fontFamily: "robotoregular"),)),
+                ],
+              ),
+              pressController==true? Checkbox(
+                checkColor: Colors.white,
+                activeColor: Colors.black,
+                hoverColor:Colors.blueAccent,
+                value: deleteIndexList[index],
+                onChanged: (bool? value){
+                  setState(() {
+                    deleteIndexList[index] = value!;
+                    bool deleteProcessController = false;
         
-                        deleteIndexList.forEach((element){
-                            if (element==true) {
-                              deleteProcessController = true;
-                            }
-                        });
-        
-                        if (!deleteProcessController) {
-                          pressController = false;
+                    deleteIndexList.forEach((element){
+                        if (element==true) {
+                          deleteProcessController = true;
                         }
-                      });
-                    },
+                    });
         
-                  ): Container()
+                    if (!deleteProcessController) {
+                      pressController = false;
+                    }
+                  });
+                },
         
-                    ],
-                  ),
-                ),
-                ),
+              ): Container()
+        
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-          );
+    );
   }
 }
 

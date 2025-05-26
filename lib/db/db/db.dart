@@ -98,6 +98,37 @@ Future<List<Map<String,Object?>>> readListsAll() async
   return res;
 }
 
+
+
+Future<List<Word>> readWordByLists(List<int> listsId, {bool ?status}) async
+{
+  final db = await instance.database;
+
+  String idList = "";
+
+  for (int i = 0; i < listsId.length; i++) {
+    if (i==listsId.length-1) {
+      idList += (listsId[i].toString());
+    }
+    else{
+      idList += (listsId[i].toString()+",");  
+    }
+  }
+
+  List<Map<String,Object?>> result;
+  if (status!=null) {
+    result = await db.rawQuery('SELECT *FROM words WHERE list_id IN('+idList+') and status='+(status?"1":"0")+'');
+  }
+  else{
+    result = await db.rawQuery('SELECT *FROM words WHERE list_id IN('+idList+')');
+  
+  }
+
+
+
+  return result.map((json) => Word.fromJson(json)).toList();
+}
+
 Future<int> updateWord(Word word) async
 {
     final db = await instance.database;

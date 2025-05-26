@@ -1,8 +1,10 @@
-import 'package:english_word_app/pages/temprory.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:english_word_app/pages/login_page.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   runApp(const MyApp());
 }
 
@@ -12,14 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Kelime EZberleme Uygulaması',
+      title: 'QWorDaZy',
       theme: ThemeData(
-     
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        
+        primarySwatch: Colors.blue,
+        fontFamily: 'carter',
       ),
-      home: Temprory(),
+      home: const LoginPage(),
     );
   }
 }
